@@ -31,7 +31,7 @@ The FilterInitialization struct is supposed the be populated with different call
 
 This was a simplified version of how the ghost and dump drivers work and I recommend reading this blog[1].
 
-##Crashdump.sys:
+## Crashdump.sys:
 As stated before all ghost drivers have the same prefix. What if we could somehow patch this prefix before all the ghost drivers are loaded into memory?
 
 ![Code: ](https://cdn.discordapp.com/attachments/892418440298631238/1168890126814937108/Screenshot_2023-10-31_132948.png?ex=655368c3&is=6540f3c3&hm=2d08ee9ec7403d4a1c82921c52dfaf9c59835a3e3c43b0e2cbbd3e119f36864c& "Code: ")
@@ -41,6 +41,10 @@ The result of this could look something like this:
  
 ![Code: ](https://cdn.discordapp.com/attachments/892418440298631238/1168891674706059325/Screenshot_2023-10-31_133757.png?ex=65536a34&is=6540f534&hm=0034175819c55481b82391ac26c8ae0332d486a16b83300b25d6563d739c553f& "Code: ")
 
+This is of course not enough to be able to hide your driver for the anti-cheat. All ghost drivers are saved in a linked list in Crashdump.sys. In Crashdump we could find the struct called DUMP_CONTROL_BLOCK which
+has a member with the type DUMP_STACK_CONTEXT[3]. In DUMP_STACK_CONTEXT is a linked list with all the dump drivers with their respective file objects. I would guess this is how some anti-cheats still after
+patching the name out, so this way they can find the file object and compare it to memory.
+So what you could do to bypass this is to unlink the driver from the linked list and pray that the anti-cheat hasn't thought about this. 
 
 
 
@@ -48,3 +52,5 @@ The result of this could look something like this:
 ## Resources:
 [1] = https://crashdmp.wordpress.com/
 [2] = "\x48\x8D\x0D\xCC\xCC\xCC\xCC\x45\x8D\x41\x03", "xxx????xxxx";
+[3] = https://systemroot.gitee.io/pages/apiexplorer/d0/d6/iop_8h.html
+
