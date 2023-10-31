@@ -46,14 +46,19 @@ has a member with the type DUMP_STACK_CONTEXT[3]. In DUMP_STACK_CONTEXT is a lin
 patching the name out, so this way they can find the file object and compare it to memory.
 So what you could do to bypass this is to unlink the driver from the linked list and pray that the anti-cheat hasn't thought about this. 
 You can also just remove the driver file. So if u are patching out dump_dumpfve.sys you can remove dumpfve.sys from fisk. This file is locked but removing it can be done from kernel. 
-Just remember to copy the file before so its not lost. Code explanation can be found in section 2.1
+Just remember to copy the file before so it's not lost. The code explanation can be found in section 2.1
 
 ## 2.1 Code
-So I created a mapper of this that will map your driver inside one of these ghost drivers. This will result in you having a driver in signed memory. Which takes away a lot of difficult problems in modern anti cheat bypassing.
+So I created a mapper of this that will map your driver inside one of these ghost drivers. This will result in you having a driver in signed memory. Which takes away a lot of difficult problems in modern anti-cheat bypassing.
 
-The mapper code is taken from xigmapper since this is just a poc and is to show the concept. Since the page protection does not match with your driver I changed the pte to the approprite protection to be
+The mapper code is taken from xigmapper since this is just a POC and is to show the concept. Since the page protection does not match with your driver I changed the pte to the appropriate protection to be
 able to run the driver. So .text section will have nx = false and rw = false; .data section will have nx=true and rw=true;
-I start out with zeroing out the whole driver to prevent bugs then i patch in my driver and change page protection.
+I start out with zeroing out the whole driver to prevent bugs then I patch in my driver and change page protection.
+
+This can easily be combined with a boot mapper and that way you could implement whats suggested in section 1.3. 
+
+This has been tested on some anti cheats. Faceit straight-up blocks it (I think they use DUMP_CONTROL_BLOCK), vanguard does not block it. EAC does not block it either.
+Chinese anti-cheats have does ban for this from my knowledge.
 
 ## Resources:
 [1] = https://crashdmp.wordpress.com/
