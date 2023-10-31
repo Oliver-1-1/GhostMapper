@@ -1,13 +1,13 @@
 # GhostMapper
 
-## Introduction: 
+## 1.1 Introduction: 
 You may or may not spotted 3 drivers in your Windows system that start with the prefix "dump_". These virtual drivers are special and are often referred to as ghost drivers.
 These ghost drivers are used to have a valid and noncorrupted image when a crash happens. When a crash occurs some drivers that need to save data to the disk may be the drivers that caused the crash, therefore
 we have a replica of those drivers with the dump_ prefix with the original driver being without the prefix. If we want to save important data to the disk before a crash the ghost drivers can be activated and used.
 The ghost drivers are monitored and managed by the crashdmp.sys driver and in that driver are some interesting information that I will take up later.
 In reality, the ghost driver is rarely used but could be abused and modified to anyone's liking.
 
-## Technical details:
+## 1.2 Technical details:
 There are ways to create your own dump driver which will later be a ghost driver. It's not well documented by Microsft but there are a few criteria that need to be fulfilled for the driver to be loaded.
 
 * As with any other driver it will need a valid certificate to be loaded.
@@ -31,7 +31,7 @@ The FilterInitialization struct is supposed the be populated with different call
 
 This was a simplified version of how the ghost and dump drivers work and I recommend reading this blog[1].
 
-## Crashdump.sys:
+## 1.3 Crashdump.sys:
 As stated before all ghost drivers have the same prefix. What if we could somehow patch this prefix before all the ghost drivers are loaded into memory?
 
 ![Code: ](https://cdn.discordapp.com/attachments/892418440298631238/1168890126814937108/Screenshot_2023-10-31_132948.png?ex=655368c3&is=6540f3c3&hm=2d08ee9ec7403d4a1c82921c52dfaf9c59835a3e3c43b0e2cbbd3e119f36864c& "Code: ")
@@ -45,12 +45,20 @@ This is of course not enough to be able to hide your driver for the anti-cheat. 
 has a member with the type DUMP_STACK_CONTEXT[3]. In DUMP_STACK_CONTEXT is a linked list with all the dump drivers with their respective file objects. I would guess this is how some anti-cheats still after
 patching the name out, so this way they can find the file object and compare it to memory.
 So what you could do to bypass this is to unlink the driver from the linked list and pray that the anti-cheat hasn't thought about this. 
+You can also just remove the driver file. So if u are patching out dump_dumpfve.sys you can remove dumpfve.sys from fisk. This file is locked but removing it can be done from kernel. 
+Just remember to copy the file before so its not lost. Code explanation can be found in section 2.1
 
+## 2.1 Code
+So I created a mapper of this that will map your driver inside one of these ghost drivers. This will result in you having a driver in signed memory. Which takes away a lot of difficult problems in modern anti cheat bypassing.
 
-
+The mapper code is taken from xigmapper since this is just a poc and is to show the concept. Since the page protection does not match with your driver I changed the pte to the approprite protection to be
+able to run the driver. So .text section will have nx = false and rw = false; .data section will have nx=true and rw=true;
+I start out with zeroing out the whole driver to prevent bugs then i patch in my driver and change page protection.
 
 ## Resources:
 [1] = https://crashdmp.wordpress.com/
+
 [2] = "\x48\x8D\x0D\xCC\xCC\xCC\xCC\x45\x8D\x41\x03", "xxx????xxxx";
+
 [3] = https://systemroot.gitee.io/pages/apiexplorer/d0/d6/iop_8h.html
 
