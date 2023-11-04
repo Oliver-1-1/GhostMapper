@@ -41,7 +41,7 @@ The result of this could look something like this:
  
 ![Code: ](https://cdn.discordapp.com/attachments/892418440298631238/1168891674706059325/Screenshot_2023-10-31_133757.png?ex=65536a34&is=6540f534&hm=0034175819c55481b82391ac26c8ae0332d486a16b83300b25d6563d739c553f& "Code: ")
 
-This is of course not enough to be able to hide your driver for the anti-cheat. All ghost drivers are saved in a linked list in Crashdump.sys. In Crashdump we could find the struct called DUMP_CONTROL_BLOCK which
+This is of course not enough to be able to hide your driver. All ghost drivers are saved in a linked list in Crashdump.sys. In Crashdump we could find the struct called DUMP_CONTROL_BLOCK which
 has a member with the type DUMP_STACK_CONTEXT[3]. In DUMP_STACK_CONTEXT is a linked list with all the dump drivers with their respective file objects.
 
 ## 2.1 Code
