@@ -121,7 +121,7 @@ NTSTATUS Map(RTL_PROCESS_MODULE_INFORMATION* module) {
 
 		//Sections could be larger than 0x1000 bytes, u will have to size of section/0x1000. to get all pages and change protection so.
 		if (!strcmp((const char*)sec_hdr->Name, ".text")) {
-			//for(int i = 0; i < sec_hdr->SizeOfRawData / 0x1000; i++){ and do this for all pages.
+			//for(int i = 0; i < round_up(sec_hdr->SizeOfRawData / 0x1000); i++){ and do this for all pages.
 				//pte = GetPte((ULONGLONG)base + sec_hdr->VirtualAddress + 0x1000*i);
 				//pte->nx = false;
 				//pte->rw = false;
