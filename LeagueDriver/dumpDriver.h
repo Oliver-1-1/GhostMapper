@@ -1,4 +1,4 @@
-// array size is 4096
+// array size is 3584
 static const unsigned char RuntimeDriver[] = {
-0x00
+0x0
 };

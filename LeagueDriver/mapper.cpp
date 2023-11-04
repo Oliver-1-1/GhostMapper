@@ -37,10 +37,6 @@ NTSTATUS ApplyMap() {
 	return 0;
 }
 
-
-
-
-
 extern "C" {
 	__int64(__fastcall* MiGetPteAddress)(unsigned __int64 a1);
 	NTKERNELAPI PVOID NTAPI RtlFindExportedRoutineByName(PVOID ImageBase, PCCH RoutineNam);
@@ -115,7 +111,7 @@ NTSTATUS Map(RTL_PROCESS_MODULE_INFORMATION* module) {
 	pte->nx = true;
 	pte->rw = true;
 
-	// Copy sections one at a time (no need to copy the headers)
+	// Copy sections one at a time
 	PIMAGE_SECTION_HEADER sec_hdr = (PIMAGE_SECTION_HEADER)((BYTE*)(&nt->FileHeader) + sizeof(IMAGE_FILE_HEADER) + nt->FileHeader.SizeOfOptionalHeader);
 	for (int i = 0; i < nt->FileHeader.NumberOfSections; i++, sec_hdr++) {
 		memcpy(allocation + sec_hdr->VirtualAddress, RuntimeDriver + sec_hdr->PointerToRawData, sec_hdr->SizeOfRawData);
@@ -184,8 +180,6 @@ NTSTATUS Map(RTL_PROCESS_MODULE_INFORMATION* module) {
 
 	//Patch in our driver :D
 	util::WriteToProtectedMem((void*)(QWORD)base, (BYTE*)allocation, nt->OptionalHeader.SizeOfImage);
-
-	//if (DestroyDriverFile(L"\\??\\C:\\Windows\\System32\\drivers\\dumpfve.sys") == 0) 
 
 
 	//Now we can free the pool since we have already patch in the driver. Also zero it out so it can be traced.

@@ -127,14 +127,12 @@
     <FilesToPackage Include="$(TargetPath)" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="fileDestroyer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapper.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dumpDriver.h" />
-    <ClInclude Include="fileDestroyer.h" />
     <ClInclude Include="mapper.h" />
     <ClInclude Include="ntDef.h" />
     <ClInclude Include="utils.h" />

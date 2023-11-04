@@ -30,9 +30,6 @@
     <ClCompile Include="utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fileDestroyer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="mapper.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
@@ -42,9 +39,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fileDestroyer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dumpDriver.h">
