@@ -74,7 +74,6 @@ namespace util {
 	} KLDR_DATA_TABLE_ENTRY, * PKLDR_DATA_TABLE_ENTRY;
 	NTSTATUS Sleep(ULONGLONG milliseconds);
 	HANDLE GetPidFromName(const unsigned short* t);
-	HANDLE FindProcessByName(char* name, HANDLE ignoreId);
 	PVOID GetModuleBase(LPCSTR moduleName);
 	PIMAGE_NT_HEADERS GetHeader(PVOID module);;
 	PBYTE FindPattern(PVOID module, DWORD size, LPCSTR pattern, LPCSTR mask);
