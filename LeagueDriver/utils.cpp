@@ -72,37 +72,6 @@ HANDLE util::GetPidFromName(const unsigned short* t) {
 	return pCurrent;
 }
 
-HANDLE util::FindProcessByName(char* name, HANDLE ignoreId) {
-
-	size_t nameSize = strlen(name);
-	if (nameSize > 14) //PEPROCESS NAME IS LIMITED LEN
-		nameSize = 14;
-	for (DWORD i = 1; i < 30000; i++) {
-		PEPROCESS p = 0;
-		if (NT_SUCCESS(PsLookupProcessByProcessId((HANDLE)i, &p))) {
-			if (!p) continue;
-			if (PsGetProcessExitStatus(p) != STATUS_PENDING) {
-				ObfDereferenceObject(p);
-				continue;
-			}
-			if (ignoreId && PsGetProcessId(p) == ignoreId) {
-				ObfDereferenceObject(p);
-				continue;
-			}
-
-			char* ProcessName = (char*)PsGetProcessImageFileName(p);
-			if (memcmp(ProcessName, name, nameSize) != 0) { //PEPROCESS NAME IS LIMITED LEN
-				ObfDereferenceObject(p);
-				continue;
-			}
-
-			ObfDereferenceObject(p);
-			return (HANDLE)i;
-		}
-	}
-	return 0;
-}
-
 PVOID util::GetModuleBase(LPCSTR moduleName) {
 	PVOID moduleBase = NULL;
 	ULONG info = 0;
