@@ -36,7 +36,7 @@ As stated before all ghost drivers have the same prefix. What if we could someho
 
 ![Code: ](https://cdn.discordapp.com/attachments/892418440298631238/1168890126814937108/Screenshot_2023-10-31_132948.png?ex=655368c3&is=6540f3c3&hm=2d08ee9ec7403d4a1c82921c52dfaf9c59835a3e3c43b0e2cbbd3e119f36864c& "Code: ")
 
-With the right signature[2] we could easily path this out during boot to load our custom-made ghost drivers. Or patch existing ghost drivers since they are inactive. More info on this later.
+With the right signature[2] we could easily patch this out during boot to load our custom-made ghost drivers. Or patch existing ghost drivers since they are inactive. More info on this later.
 The result of this could look something like this: 
  
 ![Code: ](https://cdn.discordapp.com/attachments/892418440298631238/1168891674706059325/Screenshot_2023-10-31_133757.png?ex=65536a34&is=6540f534&hm=0034175819c55481b82391ac26c8ae0332d486a16b83300b25d6563d739c553f& "Code: ")
