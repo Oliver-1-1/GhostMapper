@@ -34,12 +34,12 @@ This was a simplified version of how the ghost and dump drivers work and I recom
 ## 1.3 Crashdump.sys:
 As stated before all ghost drivers have the same prefix. What if we could somehow patch this prefix before all the ghost drivers are loaded into memory?
 
-![Code: ](https://cdn.discordapp.com/attachments/892418440298631238/1168890126814937108/Screenshot_2023-10-31_132948.png?ex=655368c3&is=6540f3c3&hm=2d08ee9ec7403d4a1c82921c52dfaf9c59835a3e3c43b0e2cbbd3e119f36864c& "Code: ")
+![Code: ](https://imgur.com/AvMTx7b.png "Code: ")
 
 With the right signature[2] we could easily patch this out during boot to load our custom-made ghost drivers. Or patch existing ghost drivers since they are inactive. More info on this later.
 The result of this could look something like this: 
  
-![Code: ](https://cdn.discordapp.com/attachments/892418440298631238/1168891674706059325/Screenshot_2023-10-31_133757.png?ex=65536a34&is=6540f534&hm=0034175819c55481b82391ac26c8ae0332d486a16b83300b25d6563d739c553f& "Code: ")
+![Code: ](https://imgur.com/d5FR3AF.png "Code: ")
 
 This is of course not enough to be able to hide your driver. All ghost drivers are saved in a linked list in Crashdump.sys. In Crashdump we could find the struct called DUMP_CONTROL_BLOCK which
 has a member with the type DUMP_STACK_CONTEXT[3]. In DUMP_STACK_CONTEXT is a linked list with all the dump drivers with their respective file objects.
