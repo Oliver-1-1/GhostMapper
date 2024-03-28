@@ -1,0 +1,19 @@
+﻿  Building 'CheatDriver' with toolset 'WindowsKernelModeDriver10.0' and the 'Desktop' target platform.
+  Stamping x64\Release\CheatDriver.inf
+  Stamping [Version] section with DriverVer=03/28/2024,14.2.42.768
+C:\Users\dorge\source\repos\CheatDriver\CheatDriver\CheatDriver.inf(28-28): warning 2083: Section [standard.ntamd64] not referenced or used.
+  CheatDriver.vcxproj -> C:\Users\dorge\source\repos\CheatDriver\x64\Release\CheatDriver.sys
+  .........................
+  Signability test complete.
+  
+  Errors:
+  None
+  
+  Warnings:
+  None
+  
+  Catalog generation complete.
+  C:\Users\dorge\source\repos\CheatDriver\x64\Release\CheatDriver\cheatdriver.cat
+  Done Adding Additional Store
+  Successfully signed: C:\Users\dorge\source\repos\CheatDriver\x64\Release\CheatDriver\cheatdriver.cat
+  
