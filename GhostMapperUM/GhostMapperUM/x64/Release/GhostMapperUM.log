@@ -1,0 +1,9 @@
+﻿  mapper.cpp
+C:\Users\dorge\source\repos\GhostMapperUM\GhostMapperUM\intel_driver.hpp(156,3): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Users\dorge\source\repos\GhostMapperUM\GhostMapperUM\intel_driver.hpp(207,3): warning C4984: 'if constexpr' is a C++17 language extension
+  Generating code
+  2 of 693 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    32 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  GhostMapperUM.vcxproj -> C:\Users\dorge\source\repos\GhostMapperUM\x64\Release\GhostMapperUM.exe
