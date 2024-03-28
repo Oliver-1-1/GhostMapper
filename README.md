@@ -44,14 +44,32 @@ The result of this could look something like this:
 This is of course not enough to be able to hide your driver. All ghost drivers are saved in a linked list in Crashdump.sys. In Crashdump we could find the struct called DUMP_CONTROL_BLOCK which
 has a member with the type DUMP_STACK_CONTEXT[3]. In DUMP_STACK_CONTEXT is a linked list with all the dump drivers with their respective file objects.
 
-## 2.1 Code
-So I created a mapper of this that will map your driver inside one of these ghost drivers. This will result in you having a driver in signed memory.
+## 2.1 Code - PoC 
+So I created a PoC mapper of this that will map your driver inside one of these ghost drivers. This will result in you having a driver in signed memory.
 
 The mapper code is taken from xigmapper since this is just a POC and is to show the concept. Since the page protection does not match with your driver I changed the pte to the appropriate protection to be
 able to run the driver. So .text section will have nx = false and rw = false; .data section will have nx=true and rw=true;
 I start out with zeroing out the whole driver to prevent bugs then I patch in my driver and change page protection.
 
 This can easily be combined with a boot mapper and that way you could implement what's suggested in section 1.3. 
+
+Update: 
+to provide a more 'realistic / ready to use' PoC we also provide 'GhostMapperUM' , which will map your unsigned driver over a ghost driver exploiting the iqvw64e.sys Intel driver from UM
+(thanks to TheCruz for some of the utils taken from kdmapper) 
+
+## 2.2 Code - GhostMapperUM 
+intended to provide a more realistic / "ready to use" PoC , doing eveyrthing from UserMode thanks to Kdmapper's utils for exploiting the iqvw64e.sys Intel driver 
+
+the mapper marks the target ghost driver as RWX (via pte manipulation) , writes your target driver over it and executes it's entry through ZwAddAtom hook 
+
+code to restore the changes (rewriting the original ghost driver image and restroing page table entries)  is included and is currently called after the target driver returns from it's DriverEntry (since the PoC driver we map does nothing beyond that)
+
+ of course , if you create a thread you'd have to sync the mapper and your driver to know when your mapped driver has actually finished it's job , only then restore the modifications !
+
+a trivial way to detect this method will be to compare section permissions and data on disk vs in memory -  will not match whilst the mapped driver is active.
+
+having said that , since ghost drivers point to an invalid path on disk some integrity checkers and anti cheats tend to simply skip them : ) 
+
 
 ## Resources:
 [1] = https://crashdmp.wordpress.com/
