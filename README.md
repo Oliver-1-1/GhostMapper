@@ -62,10 +62,12 @@ intended to provide a more realistic / "ready to use" PoC , doing eveyrthing fro
 
 the mapper marks the target ghost driver as RWX (via pte manipulation) , writes your target driver over it and executes it's entry through ZwAddAtom hook 
 
-code to restore the changes (rewriting the original ghost driver image and restroing pte's is included 
-it's currently called after the target driver returns from it's DriverEntry  since the PoC driver we map does nothing beyond that , of course , if you create a thread you'd have to sync the mapper and your driver to know when your mapped driver has actually finished it's job... 
+code to restore the changes (rewriting the original ghost driver image and restroing page table entries)  is included and is currently called after the target driver returns from it's DriverEntry (since the PoC driver we map does nothing beyond that)
 
-a trivial way to detect this method will be to compare section permissions and data on disk vs in memory -  will not match the mapped driver is active 
+ of course , if you create a thread you'd have to sync the mapper and your driver to know when your mapped driver has actually finished it's job , only then restore the modifications !
+
+a trivial way to detect this method will be to compare section permissions and data on disk vs in memory -  will not match whilst the mapped driver is active.
+
 having said that , since ghost drivers point to an invalid path on disk some integrity checkers and anti cheats tend to simply skip them : ) 
 
 
