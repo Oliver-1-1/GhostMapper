@@ -19,14 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{4D7BA537-54EC-4005-9CC2-AE134B4526F9}</ProjectGuid>
+    <ProjectGuid>{6D980A30-FFFF-4BF4-B1C1-A9C9299A7CD4}</ProjectGuid>
     <TemplateGuid>{1bc93793-694f-48fe-9372-81e2b05556fd}</TemplateGuid>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <Configuration>Debug</Configuration>
     <Platform Condition="'$(Platform)' == ''">x64</Platform>
-    <RootNamespace>LeagueDriver</RootNamespace>
-    <ProjectName>GhostMapper</ProjectName>
+    <RootNamespace>GhostMapper</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -44,7 +43,6 @@
     <ConfigurationType>Driver</ConfigurationType>
     <DriverType>KMDF</DriverType>
     <DriverTargetPlatform>Universal</DriverTargetPlatform>
-    <Driver_SpectreMitigation>Spectre</Driver_SpectreMitigation>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
     <TargetVersion>Windows10</TargetVersion>
@@ -93,21 +91,10 @@
       <FileDigestAlgorithm>sha256</FileDigestAlgorithm>
     </DriverSign>
     <ClCompile>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-    </ClCompile>
-    <ClCompile>
-      <ControlFlowGuard>false</ControlFlowGuard>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <TreatWarningAsError>false</TreatWarningAsError>
-      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <EntryPointSymbol>DriverEntry</EntryPointSymbol>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalOptions>/pdbaltpath:%_PDB% %(AdditionalOptions)</AdditionalOptions>
-      <GenerateMapFile>true</GenerateMapFile>
-      <MapExports>true</MapExports>
-      <Profile>false</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
@@ -121,21 +108,19 @@
     </DriverSign>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Inf Include="LeagueDriver.inf" />
+    <Inf Include="GhostMapper.inf" />
   </ItemGroup>
   <ItemGroup>
     <FilesToPackage Include="$(TargetPath)" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="entry.cpp" />
     <ClCompile Include="mapper.cpp" />
-    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dumpDriver.h" />
-    <ClInclude Include="mapper.h" />
-    <ClInclude Include="ntDef.h" />
-    <ClInclude Include="utils.h" />
+    <ClInclude Include="dump.hpp" />
+    <ClInclude Include="mapper.hpp" />
+    <ClInclude Include="nt.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

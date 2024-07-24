@@ -19,32 +19,26 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Inf Include="LeagueDriver.inf">
+    <Inf Include="GhostMapper.inf">
       <Filter>Driver Files</Filter>
     </Inf>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="utils.cpp">
+    <ClCompile Include="entry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mapper.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ntDef.h">
+    <ClInclude Include="mapper.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utils.h">
+    <ClInclude Include="nt.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dumpDriver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mapper.h">
+    <ClInclude Include="dump.hpp">
       <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
