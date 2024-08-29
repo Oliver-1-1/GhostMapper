@@ -1,5 +1,5 @@
 # GhostMapper
-
+To read a little more about DumpDrivers: https://github.com/Oliver-1-1/DumpDriver
 ## 1.1 Introduction: 
 You may or may not have spotted 3 drivers in your Windows system that start with the prefix "dump_". These virtual drivers are special and are often referred to as ghost drivers.
 These ghost drivers are used to have a valid and noncorrupted image when a crash happens. When a crash occurs some drivers that need to save data to the disk may be the drivers that caused the crash, therefore
