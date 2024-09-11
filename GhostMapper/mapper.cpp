@@ -141,74 +141,11 @@ NTSTATUS PatchMemory(RTL_PROCESS_MODULE_INFORMATION module)
 
 	RtlCopyMemory(allocation, DumpDriver, nt->FileHeader.SizeOfOptionalHeader);
 
-	//Make sure header pte matches
-
-	for (int i = 0; i < SIZE_TO_PAGES(nt->FileHeader.SizeOfOptionalHeader); i++)
-	{
-		PPte pte = GetPte((UINT64)module.ImageBase + i * PAGE_SIZE);
-
-		if (pte == NULL)
-		{
-			return STATUS_UNSUCCESSFUL;
-		}
-
-		pte->nx = true;
-		pte->rw = false;
-	}
-
 	// Copy sections one at a time
 	PIMAGE_SECTION_HEADER sec_hdr = (PIMAGE_SECTION_HEADER)((BYTE*)(&nt->FileHeader) + sizeof(IMAGE_FILE_HEADER) + nt->FileHeader.SizeOfOptionalHeader);
 	for (int i = 0; i < nt->FileHeader.NumberOfSections; i++, sec_hdr++)
 	{
-		//Copy to buffer
 		RtlCopyMemory(allocation + sec_hdr->VirtualAddress, DumpDriver + sec_hdr->PointerToRawData, sec_hdr->SizeOfRawData);
-
-		for (int j = 0; j < SIZE_TO_PAGES(sec_hdr->SizeOfRawData); j++) 
-		{
-			//Match the pte aswell
-			PPte pte = GetPte((ULONGLONG)(UINT64)module.ImageBase + sec_hdr->VirtualAddress + PAGE_SIZE * j);
-			if (pte == NULL)
-			{
-				continue;
-			}
-
-			//This can change depending on binary provided in DumpDriver
-			if (!strcmp((const char*)sec_hdr->Name, ".text"))
-			{
-				pte->nx = false;
-				pte->rw = false;
-			}
-			else if (!strcmp((const char*)sec_hdr->Name, ".data"))
-			{
-				pte->nx = true;
-				pte->rw = true;
-			}
-			else if (!strcmp((const char*)sec_hdr->Name, ".idata"))
-			{
-				pte->nx = true;
-				pte->rw = false;
-			}
-			else if (!strcmp((const char*)sec_hdr->Name, ".rdata"))
-			{
-				pte->nx = true;
-				pte->rw = false;
-			}
-			else if (!strcmp((const char*)sec_hdr->Name, ".pdata"))
-			{
-				pte->nx = true;
-				pte->rw = false;
-			}
-			else if (!strcmp((const char*)sec_hdr->Name, "INIT"))
-			{
-				pte->nx = false;
-				pte->rw = false;
-			}
-			else
-			{
-				pte->nx = false;
-				pte->rw = false;
-			}
-		}
 	}
 
 	//Imports
@@ -259,6 +196,70 @@ NTSTATUS PatchMemory(RTL_PROCESS_MODULE_INFORMATION module)
 	MmUnmapLockedPages(allocation, mdl);
 	MmFreePagesFromMdl(mdl);
 	ExFreePool(mdl);
+
+	//Make sure header pte matches
+	for (int i = 0; i < SIZE_TO_PAGES(nt->FileHeader.SizeOfOptionalHeader); i++)
+	{
+		PPte pte = GetPte((UINT64)module.ImageBase + i * PAGE_SIZE);
+
+		if (pte == NULL)
+		{
+			return STATUS_UNSUCCESSFUL;
+		}
+
+		pte->nx = true;
+		pte->rw = false;
+	}
+
+	for (int i = 0; i < nt->FileHeader.NumberOfSections; i++, sec_hdr++)
+	{
+		for (int j = 0; j < SIZE_TO_PAGES(sec_hdr->SizeOfRawData); j++)
+		{
+			//Match the pte aswell
+			PPte pte = GetPte((ULONGLONG)(UINT64)module.ImageBase + sec_hdr->VirtualAddress + PAGE_SIZE * j);
+			if (pte == NULL)
+			{
+				continue;
+			}
+
+			//This can change depending on binary provided in DumpDriver
+			if (!strcmp((const char*)sec_hdr->Name, ".text"))
+			{
+				pte->nx = false;
+				pte->rw = false;
+			}
+			else if (!strcmp((const char*)sec_hdr->Name, ".data"))
+			{
+				pte->nx = true;
+				pte->rw = true;
+			}
+			else if (!strcmp((const char*)sec_hdr->Name, ".idata"))
+			{
+				pte->nx = true;
+				pte->rw = false;
+			}
+			else if (!strcmp((const char*)sec_hdr->Name, ".rdata"))
+			{
+				pte->nx = true;
+				pte->rw = false;
+			}
+			else if (!strcmp((const char*)sec_hdr->Name, ".pdata"))
+			{
+				pte->nx = true;
+				pte->rw = false;
+			}
+			else if (!strcmp((const char*)sec_hdr->Name, "INIT"))
+			{
+				pte->nx = false;
+				pte->rw = false;
+			}
+			else
+			{
+				pte->nx = false;
+				pte->rw = false;
+			}
+		}
+	}
 
 	//Call our main point from target driver base + offset to DriverEntry
 	UINT64(*DriverEntry)(PDRIVER_OBJECT obj, PUNICODE_STRING str) = (UINT64(*)(PDRIVER_OBJECT, PUNICODE_STRING))(((BYTE*)module.ImageBase + nt->OptionalHeader.AddressOfEntryPoint));
