@@ -12,7 +12,7 @@ NTSTATUS GetSystemModuleInformation(LPCSTR name, PRTL_PROCESS_MODULE_INFORMATION
 	BOOL found = FALSE;
 	ULONG length = 0;
 
-	if (name == NULL || module == NULL)
+	if (module == NULL)
 	{
 		return STATUS_INVALID_PARAMETER;
 	}
