@@ -210,7 +210,8 @@ NTSTATUS PatchMemory(RTL_PROCESS_MODULE_INFORMATION module)
 		pte->nx = true;
 		pte->rw = false;
 	}
-
+	
+	sec_hdr = (PIMAGE_SECTION_HEADER)((PUCHAR)(&nt->FileHeader) + nt->FileHeader.SizeOfOptionalHeader + sizeof(IMAGE_FILE_HEADER));
 	for (int i = 0; i < nt->FileHeader.NumberOfSections; i++, sec_hdr++)
 	{
 		for (int j = 0; j < SIZE_TO_PAGES(sec_hdr->SizeOfRawData); j++)
@@ -222,42 +223,53 @@ NTSTATUS PatchMemory(RTL_PROCESS_MODULE_INFORMATION module)
 				continue;
 			}
 
-			//This can change depending on binary provided in DumpDriver
-			if (!strcmp((const char*)sec_hdr->Name, ".text"))
+			pte->nx = true;
+			pte->rw = false;
+			if (sec_hdr->Characteristics & IMAGE_SCN_CNT_CODE || sec_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
 			{
 				pte->nx = false;
-				pte->rw = false;
 			}
-			else if (!strcmp((const char*)sec_hdr->Name, ".data"))
+			if (sec_hdr->Characteristics & IMAGE_SCN_MEM_WRITE)
 			{
-				pte->nx = true;
 				pte->rw = true;
 			}
-			else if (!strcmp((const char*)sec_hdr->Name, ".idata"))
-			{
-				pte->nx = true;
-				pte->rw = false;
-			}
-			else if (!strcmp((const char*)sec_hdr->Name, ".rdata"))
-			{
-				pte->nx = true;
-				pte->rw = false;
-			}
-			else if (!strcmp((const char*)sec_hdr->Name, ".pdata"))
-			{
-				pte->nx = true;
-				pte->rw = false;
-			}
-			else if (!strcmp((const char*)sec_hdr->Name, "INIT"))
-			{
-				pte->nx = false;
-				pte->rw = false;
-			}
-			else
-			{
-				pte->nx = false;
-				pte->rw = false;
-			}
+			
+			//This can change depending on binary provided in DumpDriver
+			//if (!strcmp((const char*)sec_hdr->Name, ".text"))
+			//{
+			//	pte->nx = false;
+			//	pte->rw = false;
+			//}
+			//else if (!strcmp((const char*)sec_hdr->Name, ".data"))
+			//{
+			//	pte->nx = true;
+		        //	pte->rw = true;
+			//}
+			//else if (!strcmp((const char*)sec_hdr->Name, ".idata"))
+			//{
+			//	pte->nx = true;
+			//	pte->rw = false;
+			//}
+			//else if (!strcmp((const char*)sec_hdr->Name, ".rdata"))
+			//{
+			//	pte->nx = true;
+			//	pte->rw = false;
+			//}
+			//else if (!strcmp((const char*)sec_hdr->Name, ".pdata"))
+			//{
+			//	pte->nx = true;
+			//	pte->rw = false;
+			//}
+			//else if (!strcmp((const char*)sec_hdr->Name, "INIT"))
+			//{
+			//	pte->nx = false;
+			//	pte->rw = false;
+			//}
+			//else
+			//{
+			//	pte->nx = false;
+			//	pte->rw = false;
+			//}
 		}
 	}
 
