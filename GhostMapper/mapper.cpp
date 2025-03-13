@@ -214,7 +214,7 @@ NTSTATUS PatchMemory(RTL_PROCESS_MODULE_INFORMATION module)
 	sec_hdr = (PIMAGE_SECTION_HEADER)((PUCHAR)(&nt->FileHeader) + nt->FileHeader.SizeOfOptionalHeader + sizeof(IMAGE_FILE_HEADER));
 	for (int i = 0; i < nt->FileHeader.NumberOfSections; i++, sec_hdr++)
 	{
-		for (int j = 0; j < SIZE_TO_PAGES(sec_hdr->SizeOfRawData); j++)
+		for (int j = 0; j < SIZE_TO_PAGES(sec_hdr->Misc.VirtualSize); j++)
 		{
 			//Match the pte aswell
 			PPte pte = GetPte((ULONGLONG)(UINT64)module.ImageBase + sec_hdr->VirtualAddress + PAGE_SIZE * j);
