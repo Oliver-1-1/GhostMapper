@@ -234,42 +234,6 @@ NTSTATUS PatchMemory(RTL_PROCESS_MODULE_INFORMATION module)
 				pte->rw = true;
 			}
 			
-			//This can change depending on binary provided in DumpDriver
-			//if (!strcmp((const char*)sec_hdr->Name, ".text"))
-			//{
-			//	pte->nx = false;
-			//	pte->rw = false;
-			//}
-			//else if (!strcmp((const char*)sec_hdr->Name, ".data"))
-			//{
-			//	pte->nx = true;
-		        //	pte->rw = true;
-			//}
-			//else if (!strcmp((const char*)sec_hdr->Name, ".idata"))
-			//{
-			//	pte->nx = true;
-			//	pte->rw = false;
-			//}
-			//else if (!strcmp((const char*)sec_hdr->Name, ".rdata"))
-			//{
-			//	pte->nx = true;
-			//	pte->rw = false;
-			//}
-			//else if (!strcmp((const char*)sec_hdr->Name, ".pdata"))
-			//{
-			//	pte->nx = true;
-			//	pte->rw = false;
-			//}
-			//else if (!strcmp((const char*)sec_hdr->Name, "INIT"))
-			//{
-			//	pte->nx = false;
-			//	pte->rw = false;
-			//}
-			//else
-			//{
-			//	pte->nx = false;
-			//	pte->rw = false;
-			//}
 		}
 	}
 
