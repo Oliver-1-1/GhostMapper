@@ -11,4 +11,4 @@ NTSTATUS PatchMemory(RTL_PROCESS_MODULE_INFORMATION module);
 UINT64 ZGetProcAddress(UINT64 base, PCSTR export_name);
 NTSTATUS WriteToProtectedMemory(PVOID address, PUCHAR source, ULONG length);
 NTSTATUS ZeroMemory(PVOID address, ULONG length);
-PPte GetPte(UINT64 pa);
+PPte GetPte(UINT64 addr);
