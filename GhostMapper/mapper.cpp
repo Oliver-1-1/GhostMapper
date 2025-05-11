@@ -245,14 +245,14 @@ NTSTATUS PatchMemory(RTL_PROCESS_MODULE_INFORMATION module)
 	return STATUS_SUCCESS;
 }
 
-PPte GetPte(UINT64 pa)
+PPte GetPte(UINT64 addr)
 {
-	if (MmGetPhysicalAddress((PVOID)(pa)).QuadPart == 0)
+	if (MmGetPhysicalAddress((PVOID)(addr)).QuadPart == 0)
 	{
 		return NULL;
 	}
 
-	if (!MmIsAddressValid((PVOID)(pa)))
+	if (!MmIsAddressValid((PVOID)(addr)))
 	{
 		return NULL;
 	}
@@ -265,7 +265,7 @@ PPte GetPte(UINT64 pa)
 		*(UINT64*)&MiGetPteAddress = (UINT64)(*(int*)(routine + 8) + routine + 12);
 	}
 
-	PPte pte = (PPte)MiGetPteAddress(pa);
+	PPte pte = (PPte)MiGetPteAddress(addr);
 	if (!pte || !pte->present) 
 	{
 		return NULL;
